@@ -1,0 +1,25 @@
+{
+  "name": "haruna",
+  "version": "1.0.0",
+  "description": "A Discord Bot",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "nodemon --inspect src/index.js"
+  },
+  "author": "TrieuHiroVN",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/voice": "^0.13.0",
+    "chalk": "^4.1.2",
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.3",
+    "ffmpeg-static": "^5.1.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.7.2",
+    "opusscript": "^0.0.8",
+    "play-dl": "^1.9.6",
+    "sodium-native": "^3.4.1",
+    "yt-search": "^2.10.3"
+  }
+}
