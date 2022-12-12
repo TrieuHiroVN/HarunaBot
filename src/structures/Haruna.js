@@ -90,6 +90,7 @@ module.exports = class Haruna extends Client {
     _loadMongoDB() {
         this.database = require('../database');
 
+        mongoose.set('strictQuery', false);
         mongoose.connect(this.config.mongoSRV);
         const eventpath = join(__dirname, '../events/mongodb');
 

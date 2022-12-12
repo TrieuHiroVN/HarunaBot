@@ -16,6 +16,7 @@ module.exports = {
         // register commands
         const commands = [];
         haruna.commands.forEach(command => commands.push(command));
-        haruna.application.commands.set(commands, '925015298967482389');
+        haruna.application.commands.set(commands, '925015298967482389'); // senko coffee
+        haruna.application.commands.set(commands, '933738059701305395'); // wanderers
     }
 };
