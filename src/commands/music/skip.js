@@ -3,7 +3,7 @@ const { ApplicationCommandType, ApplicationCommandOptionType, ChatInputCommandIn
 
 module.exports = {
     name: 'skip',
-    description: 'Bỏ qua bài hát đang chơi',
+    description: 'Skip current playing music',
     type: ApplicationCommandType.ChatInput,
 
     /**
@@ -13,22 +13,22 @@ module.exports = {
      */
     run: async (haruna, interaction) => {
         const queue = haruna.musicPlayer.get(interaction.guild.id);
-        if (!queue) return interaction.followUp({ content: '❌ Tôi hiện đang không chơi nhạc!' });
+        if (!queue) return interaction.followUp({ content: '❌ I am currently not playing music!' });
 
-        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ Bạn cần tham gia một kênh thoại trước!' });
+        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ You must join a voice channel first!' });
         if (
             interaction.guild.members.me.voice.channel
             && interaction.guild.members.me.voice.channel !== interaction.member.voice.channel
-        ) return interaction.followUp({ content: '⚠ Bạn cần ở chung một kênh thoại với tôi!' });
+        ) return interaction.followUp({ content: '⚠ You must be in the same voice channel with me!' });
 
         if ( // dj role later
             interaction.user.id !== queue.songs[0].requester.id
             && !interaction.member.permissions.has([PermissionFlagsBits.Administrator])
-        ) return interaction.followUp({ content: 'Bạn không thể bỏ qua bài hát của người khác!' });
+        ) return interaction.followUp({ content: 'You cannot skip someone else\'s song!' });
 
         queue.songs.shift();
         haruna.functions.play(haruna, interaction.guild, queue.songs[0]);
 
-        interaction.followUp({ content: '✅ Đã bỏ qua bài hát hiện tại!' });
+        interaction.followUp({ content: '✅ Skipped!' });
     }
 };

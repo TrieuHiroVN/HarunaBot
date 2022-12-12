@@ -13,7 +13,7 @@ module.exports = {
         if (interaction.isChatInputCommand()) {
             // get command
             const command = haruna.commands.get(interaction.commandName);
-            if (!command) return interaction.reply({ content: 'Đã có lỗi xảy ra!' });
+            if (!command) return interaction.reply({ content: 'An error occurred!' });
 
             // database auto create
             const userData = await haruna.database.user.findById(interaction.user.id);
@@ -27,7 +27,7 @@ module.exports = {
                 await command.run(haruna, interaction);
             } catch (e) {
                 console.error(e);
-                interaction.followUp({ content: 'Đã có lỗi xảy ra!' });
+                interaction.followUp({ content: 'An error occurred!' });
             };
         };
     }

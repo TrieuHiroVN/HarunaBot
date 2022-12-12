@@ -3,7 +3,7 @@ const { ApplicationCommandType, ApplicationCommandOptionType, ChatInputCommandIn
 
 module.exports = {
     name: 'pause',
-    description: 'Tạm dừng bài hát',
+    description: 'Pause the music',
     type: ApplicationCommandType.ChatInput,
 
     /**
@@ -13,17 +13,17 @@ module.exports = {
      */
     run: async (haruna, interaction) => {
         const queue = haruna.musicPlayer.get(interaction.guild.id);
-        if (!queue) return interaction.followUp({ content: '❌ Tôi hiện đang không chơi nhạc!' });
+        if (!queue) return interaction.followUp({ content: '❌ I am currently not playing music!' });
 
-        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ Bạn cần tham gia một kênh thoại trước!' });
+        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ You must join a voice channel first!' });
         if (
             interaction.guild.members.me.voice.channel
             && interaction.guild.members.me.voice.channel !== interaction.member.voice.channel
-        ) return interaction.followUp({ content: '⚠ Bạn cần ở chung một kênh thoại với tôi!' });
+        ) return interaction.followUp({ content: '⚠ You must be in the same voice channel with me!' });
 
         // dj role later
         const res = await queue.connection.subscription.player.pause();
-        if (res) interaction.followUp({ content: '✅ Đã tạm dừng bài hát!' });
-        else interaction.followUp({ content: '❌ Bài hát đã được tạm dừng rồi!' });
+        if (res) interaction.followUp({ content: '✅ Paused!' });
+        else interaction.followUp({ content: '❌ The song has already been paused!' });
     }
 };

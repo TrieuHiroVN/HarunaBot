@@ -13,17 +13,17 @@ module.exports = {
      */
     run: async (haruna, interaction) => {
         const queue = haruna.musicPlayer.get(interaction.guild.id);
-        if (!queue) return interaction.followUp({ content: '❌ Tôi hiện đang không chơi nhạc!' });
+        if (!queue) return interaction.followUp({ content: '❌ I am currently not playing music!' });
 
-        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ Bạn cần tham gia một kênh thoại trước!' });
+        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ You must join a voice channel first!' });
         if (
             interaction.guild.members.me.voice.channel
             && interaction.guild.members.me.voice.channel !== interaction.member.voice.channel
-        ) return interaction.followUp({ content: '⚠ Bạn cần ở chung một kênh thoại với tôi!' });
+        ) return interaction.followUp({ content: '⚠ You must be in the same voice channel with me!' });
 
         // dj role later
         const res = await queue.connection.subscription.player.unpause();
-        if (res) interaction.followUp({ content: '✅ Đã tiếp tục bài hát!' });
-        else interaction.followUp({ content: '❌ Bài hát chưa được tạm dừng!' });
+        if (res) interaction.followUp({ content: '✅ Resumed!' });
+        else interaction.followUp({ content: '❌ The song has not been paused!' });
     }
 };

@@ -5,11 +5,11 @@ const yts = require('yt-search');
 
 module.exports = {
     name: 'play',
-    description: 'Chơi nhạc',
+    description: 'Play music',
     options: [
         {
             name: 'query',
-            description: 'Tên/Liên kết bài hát',
+            description: 'Name/YouTube link of the song',
             type: ApplicationCommandOptionType.String,
             required: true
         }
@@ -22,11 +22,11 @@ module.exports = {
      * @param { ChatInputCommandInteraction } interaction 
      */
     run: async (haruna, interaction) => {
-        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ Bạn cần tham gia một kênh thoại trước!' });
+        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ You must join a voice channel first!' });
         if (
             interaction.guild.members.me.voice.channel
             && interaction.guild.members.me.voice.channel !== interaction.member.voice.channel
-        ) return interaction.followUp({ content: '⚠ Bạn cần ở chung một kênh thoại với tôi!' });
+        ) return interaction.followUp({ content: '⚠ You must be in the same voice channel with me!' });
 
         const query = interaction.options.getString('query');
         var searchRes;
@@ -46,10 +46,10 @@ module.exports = {
                 url.hostname === 'youtu.be'
                 || url.hostname === 'www.youtu.be'
             ) searchRes = [await yts({ videoId: url.pathname.slice(1) })];
-            else return interaction.followUp({ content: '❌ Bot chỉ hỗ trợ tìm kiếm bằng liên kết YouTube!' });
+            else return interaction.followUp({ content: '❌ I only support YouTube links!' });
         } else searchRes = [await yts(query).then(x => x.videos[0])];
 
-        if (searchRes.length === 0) return interaction.followUp({ content: '❌ Không tìm thấy kết quả!' });
+        if (searchRes.length === 0) return interaction.followUp({ content: '❌ No results found!' });
 
         const queue = haruna.musicPlayer.get(interaction.guild.id);
         if (!queue) {
@@ -76,10 +76,10 @@ module.exports = {
             } catch (e) {
                 console.error(e);
                 queue.delete(interaction.guild.id);
-                return interaction.followUp({ content: '❌ Đã có lỗi xảy ra!' });
+                return interaction.followUp({ content: '❌ An error occurred!' });
             };
         } else searchRes.forEach(song => queue.songs.push({ info: song, requester: interaction.user }));
 
-        interaction.followUp({ content: `✅ Đã thêm **${searchRes.length > 1 ? `${searchRes.length} bài hát` : searchRes[0].title}** vào danh sách chờ!` });
+        interaction.followUp({ content: `✅ Added **${searchRes.length > 1 ? `${searchRes.length} songs` : searchRes[0].title}** to the queue!` });
     }
 };

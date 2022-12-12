@@ -3,7 +3,7 @@ const { ApplicationCommandType, ApplicationCommandOptionType, ChatInputCommandIn
 
 module.exports = {
     name: 'stop',
-    description: 'Dừng phát nhạc và phá huỷ hàng chờ',
+    description: 'Stop playing music and destroy the queue',
     type: ApplicationCommandType.ChatInput,
 
     /**
@@ -13,17 +13,17 @@ module.exports = {
      */
     run: async (haruna, interaction) => {
         const queue = haruna.musicPlayer.get(interaction.guild.id);
-        if (!queue) return interaction.followUp({ content: '❌ Tôi hiện đang không chơi nhạc!' });
+        if (!queue) return interaction.followUp({ content: '❌ I am currently not playing music!' });
 
-        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ Bạn cần tham gia một kênh thoại trước!' });
+        if (!interaction.member.voice.channel) return interaction.followUp({ content: '⚠ You must be in a voice channel first!' });
         if (
             interaction.guild.members.me.voice.channel
             && interaction.guild.members.me.voice.channel !== interaction.member.voice.channel
-        ) return interaction.followUp({ content: '⚠ Bạn cần ở chung một kênh thoại với tôi!' });
+        ) return interaction.followUp({ content: '⚠ You must be in the same voice channel with me!' });
 
         // dj role later
         queue.connection.destroy();
         haruna.musicPlayer.delete(interaction.guild.id);
-        interaction.followUp({ content: '✅ Đã dừng và phá huỷ hàng chờ!' });
+        interaction.followUp({ content: '✅ Stopped and destroyed queue!' });
     }
 };
